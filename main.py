@@ -73,10 +73,10 @@ def rtc(text):
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
 group = await client.get_entity('修真•聊天•群')
-channel_id = -1001426948990
+channel_id = "-1001426948990"
 central = pytz.timezone("Asia/Taipei")
 
-async for message in client.iter_messages(group, limit=200, reverse=True):
+for message in client.iter_messages(group, limit=200, reverse=True):
     if message.text:
         entity = client.get_entity(PeerUser(message.from_id))
         print(message.id, message.from_id, rtc(message.text))
@@ -111,7 +111,7 @@ async for message in client.iter_messages(group, limit=200, reverse=True):
             "type": "to_Telegram",
             "text": txt,
             "notification": True,
-            "parse_mode": "Markdown"
+            "parse_mode": ""
         }
         sendMSG(channel_id, st)
     else:
@@ -128,3 +128,8 @@ print(entity)
 type(entity)
 print(entity.deleted)
 '''
+
+sendMSG(channel_id,{'type': 'to_Telegram',
+ 'text': ' o k 了 \n\nfirst_name=None last_name=\nmessage_id=2 time=2017-02-19 19:39:34+08:00 ',
+ 'notification': True,
+ 'parse_mode': ''})
