@@ -1,6 +1,7 @@
 import json
 import time
 import pytz
+import asyncio
 import datetime
 import telepot
 import configparser
@@ -9,6 +10,7 @@ import telethon.sync
 from telethon import TelegramClient, sync
 from telethon.tl.functions.messages import AddChatUserRequest
 from telethon import events, functions, types
+from telethon.tl.types import PeerUser, PeerChat, PeerChannel
 # 函式庫引入完畢
 
 config = configparser.ConfigParser()
@@ -70,14 +72,13 @@ def rtc(text):
 
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
-
-
 group = await client.get_entity('修真•聊天•群')
 channel_id = -1001426948990
 central = pytz.timezone("Asia/Taipei")
+
 async for message in client.iter_messages(group, limit=200, reverse=True):
     if message.text:
-        entity = client.get_entity(message.from_id)
+        entity = client.get_entity(PeerUser(message.from_id))
         print(message.id, message.from_id, rtc(message.text))
         print(message)
 
