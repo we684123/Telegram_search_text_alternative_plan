@@ -73,10 +73,10 @@ def rtc(text):
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
 group = client.get_entity('修真•聊天•群')
-channel_id = "-1001426948990"
+channel_id = client.get_entity('https://t.me/joinchat/AAAAAFUNg348cjC2fiMpdQ')
 central = pytz.timezone("Asia/Taipei")
 
-for message in client.iter_messages(group, limit=50, reverse=True):
+for message in client.iter_messages(group, limit=50, offset_id=50, reverse=True):
     if message.text:
         entity = client.get_entity(PeerUser(message.from_id))
         print(message.id, message.from_id, rtc(message.text))
@@ -86,7 +86,7 @@ for message in client.iter_messages(group, limit=50, reverse=True):
         # print(entity.last_name)
         print(message.date.astimezone(central))
         print(entity)
-        #print(entity.deleted)
+        # print(entity.deleted)
 
         if type(entity) == 'coroutine':
             entity_deleted = True
@@ -96,7 +96,8 @@ for message in client.iter_messages(group, limit=50, reverse=True):
             entity_first_name = entity.first_name
             entity_last_name = entity.last_name
 
-
+        if entity_first_name == None:
+            entity_first_name = '已刪除的帳號'
         if entity_last_name == None:
             entity_last_name = ''
 
@@ -114,7 +115,8 @@ for message in client.iter_messages(group, limit=50, reverse=True):
             "notification": True,
             "parse_mode": ""
         }
-        sendMSG(channel_id, st)
+        #sendMSG(channel_id, st)
+        client.send_message(channel_id, txt)
     else:
         st = {
             "type": "to_Telegram",
@@ -122,15 +124,17 @@ for message in client.iter_messages(group, limit=50, reverse=True):
             "notification": True,
             "parse_mode": "Markdown"
         }
-        sendMSG(channel_id, st)
+        client.send_message(channel_id, '[其他內容]')
+        #sendMSG(channel_id, st)
 
 '''
 print(entity)
 type(entity)
 print(entity.deleted)
 '''
-
-sendMSG(channel_id,{'type': 'to_Telegram',
- 'text': ' o k 了 \n\nfirst_name=None last_name=\nmessage_id=2 time=2017-02-19 19:39:34+08:00 ',
- 'notification': True,
- 'parse_mode': ''})
+entity = client.get_entity('https://t.me/joinchat/AAAAAFUNg348cjC2fiMpdQ')
+client.send_message(entity, '[其他內容]')
+sendMSG(channel_id, {'type': 'to_Telegram',
+                     'text': ' o k 了 \n\nfirst_name=None last_name=\nmessage_id=2 time=2017-02-19 19:39:34+08:00 ',
+                     'notification': True,
+                     'parse_mode': ''})
