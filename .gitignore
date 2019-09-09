@@ -1,0 +1,12 @@
+
+config\.txt
+
+\.vscode/
+
+__pycache__/
+
+*.session
+
+*.session-journal
+
+test
