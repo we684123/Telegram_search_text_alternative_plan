@@ -72,11 +72,11 @@ def rtc(text):
 
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
-group = await client.get_entity('修真•聊天•群')
+group = client.get_entity('修真•聊天•群')
 channel_id = "-1001426948990"
 central = pytz.timezone("Asia/Taipei")
 
-for message in client.iter_messages(group, limit=200, reverse=True):
+for message in client.iter_messages(group, limit=50, reverse=True):
     if message.text:
         entity = client.get_entity(PeerUser(message.from_id))
         print(message.id, message.from_id, rtc(message.text))
@@ -100,8 +100,9 @@ for message in client.iter_messages(group, limit=200, reverse=True):
         if entity_last_name == None:
             entity_last_name = ''
 
-        txt = "{0}\n\nfirst_name={1} last_name={2}\nmessage_id={3} time={4} ".format(
+        txt = "UID={1}:\n{0}\n\nfirst_name={2} last_name={3}\nmessage_id={4} time={5} ".format(
             rtc(message.text),
+            message.from_id,
             entity_first_name,
             entity_last_name,
             message.id,
