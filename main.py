@@ -1,7 +1,8 @@
 import json
 import time
-import random
 import pytz
+import random
+import telepot
 import asyncio
 import datetime
 import configparser
@@ -16,13 +17,19 @@ config = configparser.ConfigParser()
 config.read('config.txt', encoding='utf8')
 # config.txt準備完畢
 
-api_id = int(config['token']['api_id'])
-api_hash = config['token']['api_hash']
-client = TelegramClient('Portalgram', api_id, api_hash)
+owner = config['tgbot']['owner']
+bot_token = str(config['tgbot']['token'])
+bot = telepot.Bot(bot_token)
+# tgbot準備完畢
+
+api_id = int(config['userbot']['api_id'])
+api_hash = config['userbot']['api_hash']
+client = TelegramClient('prototype', api_id, api_hash)
 client.start()
 # userbot準備完畢
 
 group_name = '修真•聊天•群'
+channel_id = int(-1001426948990)
 # 基本定義
 
 def sendMSG(chat_id=None, ct=None, reply_to_message_id=None):
@@ -70,7 +77,6 @@ def rtc(text):
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
 group = client.get_entity(group_name)
-channel_id = client.get_entity('https://t.me/joinchat/AAAAAFUNg348cjC2fiMpdQ')
 central = pytz.timezone("Asia/Taipei")
 msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 # for message in client.iter_messages(group, reverse=True):
@@ -117,13 +123,13 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         st = {
             "type": "to_Telegram",
             "text": txt,
-            "notification": True,
+            "notification": False,
             "parse_mode": ""
         }
-        #sendMSG(channel_id, st)
-        client.send_message(channel_id, txt)
-        #sendMSG(channel_id, st)
-    time.sleep(random.random())
+        sendMSG(channel_id, st)
+        time.sleep(3.2)
+        #client.send_message(channel_id, txt)
+        
     if message.id % 991 == 0:
         print('time.sleep(61)')
         time.sleep(61)
