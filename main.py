@@ -129,7 +129,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         sendMSG(channel_id, st)
         time.sleep(3.2)
         #client.send_message(channel_id, txt)
-        
+    '''
     if message.id % 991 == 0:
         print('time.sleep(61)')
         time.sleep(61)
@@ -139,3 +139,4 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
     if message.id % 127 == 0:
         print('time.sleep(2)')
         time.sleep(2)
+    '''
