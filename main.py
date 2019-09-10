@@ -127,7 +127,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
             "parse_mode": ""
         }
         sendMSG(channel_id, st)
-        time.sleep(3.2)
+        time.sleep(3.05)
         #client.send_message(channel_id, txt)
     '''
     if message.id % 991 == 0:
