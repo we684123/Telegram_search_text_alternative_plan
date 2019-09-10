@@ -106,7 +106,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         else:
             endtxt = rtc(message.text)
 
-        txt = "UID={1}:\n{0}\n\nFN={2} LN={3}\n{4}\n{5} ".format(
+        txt = "{0}\n\nFN={2} LN={3}\nUID={1} {4}\n{5} ".format(
             endtxt,
             message.from_id,
             entity_first_name,
@@ -124,7 +124,12 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         client.send_message(channel_id, txt)
         #sendMSG(channel_id, st)
     time.sleep(random.random())
-    if message.id % 1000 == 0:
-        time.sleep(60)
-    if message.id % 147 == 0:
-        time.sleep(3)
+    if message.id % 991 == 0:
+        print('time.sleep(61)')
+        time.sleep(61)
+    if message.id % 307 == 0:
+        print('time.sleep(5)')
+        time.sleep(5)
+    if message.id % 127 == 0:
+        print('time.sleep(2)')
+        time.sleep(2)
