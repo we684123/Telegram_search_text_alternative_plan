@@ -1,5 +1,6 @@
 import json
 import time
+import random
 import pytz
 import asyncio
 import datetime
@@ -75,8 +76,11 @@ for dialog in client.get_dialogs(limit=10):
 group = client.get_entity('修真•聊天•群')
 channel_id = client.get_entity('https://t.me/joinchat/AAAAAFUNg348cjC2fiMpdQ')
 central = pytz.timezone("Asia/Taipei")
-
-for message in client.iter_messages(group, limit=50, offset_id=50, reverse=True):
+msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
+# for message in client.iter_messages(group, reverse=True):
+# for message in client.iter_messages(group, limit=10, offset_id=100, reverse=True):
+offset_id = int(input('offset_id = ?'))
+for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
     if message.text:
         entity = client.get_entity(PeerUser(message.from_id))
         print(message.id, message.from_id, rtc(message.text))
@@ -84,8 +88,9 @@ for message in client.iter_messages(group, limit=50, offset_id=50, reverse=True)
 
         # print(entity.first_name)
         # print(entity.last_name)
-        print(message.date.astimezone(central))
+        # print(message.date.astimezone(central))
         print(entity)
+        print("========")
         # print(entity.deleted)
 
         if type(entity) == 'coroutine':
@@ -100,14 +105,18 @@ for message in client.iter_messages(group, limit=50, offset_id=50, reverse=True)
             entity_first_name = '已刪除的帳號'
         if entity_last_name == None:
             entity_last_name = ''
+        if message.media:
+            endtxt = '[影片or照片]\n' + rtc(message.text)
+        else:
+            endtxt = rtc(message.text)
 
-        txt = "UID={1}:\n{0}\n\nfirst_name={2} last_name={3}\nmessage_id={4} time={5} ".format(
-            rtc(message.text),
+        txt = "UID={1}:\n{0}\n\nFN={2} LN={3}\n{4}\n{5} ".format(
+            endtxt,
             message.from_id,
             entity_first_name,
             entity_last_name,
-            message.id,
-            message.date.astimezone(central)
+            message.date.astimezone(central),
+            (msg_link_head + str(message.id)),
         )
         st = {
             "type": "to_Telegram",
@@ -117,24 +126,5 @@ for message in client.iter_messages(group, limit=50, offset_id=50, reverse=True)
         }
         #sendMSG(channel_id, st)
         client.send_message(channel_id, txt)
-    else:
-        st = {
-            "type": "to_Telegram",
-            "text": '[其他內容]',
-            "notification": True,
-            "parse_mode": "Markdown"
-        }
-        client.send_message(channel_id, '[其他內容]')
         #sendMSG(channel_id, st)
-
-'''
-print(entity)
-type(entity)
-print(entity.deleted)
-'''
-entity = client.get_entity('https://t.me/joinchat/AAAAAFUNg348cjC2fiMpdQ')
-client.send_message(entity, '[其他內容]')
-sendMSG(channel_id, {'type': 'to_Telegram',
-                     'text': ' o k 了 \n\nfirst_name=None last_name=\nmessage_id=2 time=2017-02-19 19:39:34+08:00 ',
-                     'notification': True,
-                     'parse_mode': ''})
+    time.sleep(random.random())
