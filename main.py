@@ -4,23 +4,17 @@ import random
 import pytz
 import asyncio
 import datetime
-import telepot
 import configparser
 from pprint import pprint
-import telethon.sync
 from telethon import TelegramClient, sync
-from telethon.tl.functions.messages import AddChatUserRequest
 from telethon import events, functions, types
 from telethon.tl.types import PeerUser, PeerChat, PeerChannel
+from telethon.tl.functions.messages import AddChatUserRequest
 # 函式庫引入完畢
 
 config = configparser.ConfigParser()
 config.read('config.txt', encoding='utf8')
 # config.txt準備完畢
-
-bot_token = "978977382:AAHHe-PBTpwFmSNBMQciqVTXkbG8ZNmGihU"
-bot = telepot.Bot(bot_token)
-# bot準備完畢
 
 api_id = int(config['token']['api_id'])
 api_hash = config['token']['api_hash']
@@ -28,6 +22,8 @@ client = TelegramClient('Portalgram', api_id, api_hash)
 client.start()
 # userbot準備完畢
 
+group_name = '修真•聊天•群'
+# 基本定義
 
 def sendMSG(chat_id=None, ct=None, reply_to_message_id=None):
     if chat_id == None:
@@ -73,13 +69,13 @@ def rtc(text):
 
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
-group = client.get_entity('修真•聊天•群')
+group = client.get_entity(group_name)
 channel_id = client.get_entity('https://t.me/joinchat/AAAAAFUNg348cjC2fiMpdQ')
 central = pytz.timezone("Asia/Taipei")
 msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 # for message in client.iter_messages(group, reverse=True):
 # for message in client.iter_messages(group, limit=10, offset_id=100, reverse=True):
-offset_id = int(input('offset_id = ?'))
+offset_id = int(input('offset_id = ?\n'))
 for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
     if message.text:
         entity = client.get_entity(PeerUser(message.from_id))
@@ -128,3 +124,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         client.send_message(channel_id, txt)
         #sendMSG(channel_id, st)
     time.sleep(random.random())
+    if message.id % 1000 == 0:
+        time.sleep(60)
+    if message.id % 147 == 0:
+        time.sleep(3)
