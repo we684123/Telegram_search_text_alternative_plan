@@ -96,7 +96,7 @@ msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 offset_id = int(input('plz input offset_id :\n'))
 now_use = 0
 now_time = time.time()
-for message in client.iter_messages(group, limit=30, offset_id=offset_id, reverse=True):
+for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
     if message.text:
         now_use += 1
         entity = client.get_entity(PeerUser(message.from_id))
@@ -139,8 +139,8 @@ for message in client.iter_messages(group, limit=30, offset_id=offset_id, revers
         }
         # print(txt)
         target = now_use % bots_len
-        sendMSG(bots[target], channel_id, st)
         print(base['tgbots'][target]['name'])
+        sendMSG(bots[target], channel_id, st)
         interval_time = time.time() - now_time
         now_time = time.time()
         print('間隔 {0} 秒'.format(interval_time))
