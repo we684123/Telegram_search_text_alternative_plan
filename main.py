@@ -8,10 +8,12 @@ from telethon import TelegramClient, sync
 from telethon import events, functions, types
 from telethon.tl.types import PeerUser, PeerChat, PeerChannel
 from telethon.tl.functions.messages import AddChatUserRequest
+from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
 # 函式庫引入完畢
 
 from config import base
 base = base.base()
+ws = WS("./data")
 # 設定檔引入
 
 owner = base['owner']
@@ -79,12 +81,20 @@ def sendMSG(bot, chat_id=None, ct=None, reply_to_message_id=None):
 
 def rtc(text):
     if type(text) == str:
-        return miss_md(text.replace('', ' '))
+        word_sentence_list = ws([text])
+        return miss_md(assemble(word_sentence_list))
     return ''
 
 
 def miss_md(text):
     return text.replace('_', '\_').replace('*', '\*').replace('`', '\`')
+
+
+def assemble(word_sentence_list):
+    w = ''
+    for sentence in word_sentence_list:
+        w += (' '.join(sentence)) + '\n'
+    return w
 # ==================== 以上function準備 ==================== #
 
 
@@ -126,8 +136,8 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         else:
             endtxt = rtc(message.text)
 
-        txt = "{0}\n\nFN={2} LN={3}\nUID={1}   MID={6} \n [{4}]({5}) ".format(
-            endtxt,
+        txt = "{0}\nFN={2} LN={3}\nUID={1}   MID={6} \n [{4}]({5}) ".format(
+            endtxt, #這個字尾會自己有一個 \n
             message.from_id,
             miss_md(entity_first_name),
             miss_md(entity_last_name),
