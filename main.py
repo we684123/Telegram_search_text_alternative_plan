@@ -79,9 +79,12 @@ def sendMSG(bot, chat_id=None, ct=None, reply_to_message_id=None):
 
 def rtc(text):
     if type(text) == str:
-        return text.replace(
-            '', ' ').replace('_', '\_').replace('*', '\*').replace('`', '\`')
+        return miss_md(text.replace('', ' '))
     return ''
+
+
+def miss_md(text):
+    return text.replace('_', '\_').replace('*', '\*').replace('`', '\`')
 # ==================== 以上function準備 ==================== #
 
 
@@ -102,6 +105,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         entity = client.get_entity(PeerUser(message.from_id))
         print(now_use)
         print(message.id, message.from_id, rtc(message.text))
+        # print('message')
         # print(message)
         # print(entity)
 
@@ -125,8 +129,8 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         txt = "{0}\n\nFN={2} LN={3}\nUID={1}   MID={6} \n [{4}]({5}) ".format(
             endtxt,
             message.from_id,
-            entity_first_name,
-            entity_last_name,
+            miss_md(entity_first_name),
+            miss_md(entity_last_name),
             str(message.date.astimezone(central)) + ' <-對話連結',
             (msg_link_head + str(message.id)),
             str(message.id),
