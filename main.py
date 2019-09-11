@@ -17,10 +17,16 @@ config = configparser.ConfigParser()
 config.read('config.txt', encoding='utf8')
 # config.txt準備完畢
 
-owner = config['tgbot']['owner']
-bot_token = str(config['tgbot']['token'])
-bot = telepot.Bot(bot_token)
-# tgbot準備完畢
+owner = config['base']['owner']
+# base準備完畢
+
+bot_token1 = str(config['tgbot1']['token'])
+bot1 = telepot.Bot(bot_token1)
+# tgbot1準備完畢
+
+bot_token2 = str(config['tgbot1']['token'])
+bot2 = telepot.Bot(bot_token2)
+# tgbot2準備完畢
 
 api_id = int(config['userbot']['api_id'])
 api_hash = config['userbot']['api_hash']
@@ -32,7 +38,8 @@ group_name = '修真•聊天•群'
 channel_id = int(-1001426948990)
 # 基本定義
 
-def sendMSG(chat_id=None, ct=None, reply_to_message_id=None):
+
+def sendMSG(bot,chat_id=None, ct=None, reply_to_message_id=None):
     if chat_id == None:
         raise('chat_id loss')
     if ct == None:
@@ -82,7 +89,7 @@ msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 # for message in client.iter_messages(group, reverse=True):
 # for message in client.iter_messages(group, limit=10, offset_id=100, reverse=True):
 offset_id = int(input('offset_id = ?\n'))
-for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
+for message in client.iter_messages(group, limit=10, offset_id=offset_id, reverse=True):
     if message.text:
         entity = client.get_entity(PeerUser(message.from_id))
         print(message.id, message.from_id, rtc(message.text))
@@ -112,23 +119,34 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         else:
             endtxt = rtc(message.text)
 
-        txt = "{0}\n\nFN={2} LN={3}\nUID={1} {4}\n{5} ".format(
+        txt = "{0}\n\nFN={2} LN={3}\nUID={1} MID={6} \n [{4}]({5}) ".format(
             endtxt,
             message.from_id,
             entity_first_name,
             entity_last_name,
-            message.date.astimezone(central),
+            str(message.date.astimezone(central)) + ' <-對話連結',
             (msg_link_head + str(message.id)),
+            str(message.id),
         )
         st = {
             "type": "to_Telegram",
             "text": txt,
             "notification": False,
-            "parse_mode": ""
+            "parse_mode": "Markdown"
         }
-        sendMSG(channel_id, st)
+        #print(txt)
+        if message.id % 2 == 0:
+            sendMSG(bot1,channel_id, st)
+            print('1')
+        if message.id % 2 == 1:
+            print(st)
+            sendMSG(bot2,channel_id, st)
+            print('2')
+
         time.sleep(3.05)
         #client.send_message(channel_id, txt)
+
+
     '''
     if message.id % 991 == 0:
         print('time.sleep(61)')
