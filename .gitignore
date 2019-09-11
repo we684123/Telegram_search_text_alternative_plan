@@ -12,3 +12,5 @@ __pycache__/
 test
 
 config/base.py
+
+./data
