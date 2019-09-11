@@ -3,43 +3,39 @@ import time
 import pytz
 import random
 import telepot
-import asyncio
 import datetime
-import configparser
-from pprint import pprint
 from telethon import TelegramClient, sync
 from telethon import events, functions, types
 from telethon.tl.types import PeerUser, PeerChat, PeerChannel
 from telethon.tl.functions.messages import AddChatUserRequest
 # 函式庫引入完畢
 
-config = configparser.ConfigParser()
-config.read('config.txt', encoding='utf8')
-# config.txt準備完畢
+from config import base
+base = base.base()
+# 設定檔引入
 
-owner = config['base']['owner']
-# base準備完畢
+owner = base['owner']
+timezone = base['timezone']
+bots_len = len(base['tgbots'])
+group_name = base['group_name']
+channel_id = base['channel_id']
+interval_time = base['interval']
+sleep_time = interval_time/bots_len
+# 基本定義
 
-bot_token1 = str(config['tgbot1']['token'])
-bot1 = telepot.Bot(bot_token1)
-# tgbot1準備完畢
+bots = []
+for i in range(len(base['tgbots'])):
+    bots.append(telepot.Bot(base['tgbots'][0]['token']))
+# tgbot準備完畢
 
-bot_token2 = str(config['tgbot1']['token'])
-bot2 = telepot.Bot(bot_token2)
-# tgbot2準備完畢
-
-api_id = int(config['userbot']['api_id'])
-api_hash = config['userbot']['api_hash']
+api_id = int(base['userbot']['api_id'])
+api_hash = base['userbot']['api_hash']
 client = TelegramClient('prototype', api_id, api_hash)
 client.start()
 # userbot準備完畢
 
-group_name = '修真•聊天•群'
-channel_id = int(-1001426948990)
-# 基本定義
 
-
-def sendMSG(bot,chat_id=None, ct=None, reply_to_message_id=None):
+def sendMSG(bot, chat_id=None, ct=None, reply_to_message_id=None):
     if chat_id == None:
         raise('chat_id loss')
     if ct == None:
@@ -70,37 +66,44 @@ def sendMSG(bot,chat_id=None, ct=None, reply_to_message_id=None):
     else:
         reply_markup = None
 
-    bot.sendMessage(chat_id, text=t, parse_mode=parse_mode,     disable_web_page_preview=disable_web_page_preview,
-                    disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,  reply_markup=reply_markup)
+    bot.sendMessage(
+        chat_id,
+        text=t,
+        parse_mode=parse_mode,
+        disable_web_page_preview=disable_web_page_preview,
+        disable_notification=disable_notification,
+        reply_to_message_id=reply_to_message_id,
+        reply_markup=reply_markup
+    )
 
 
 def rtc(text):
     if type(text) == str:
-        return text.replace('', ' ')
+        return text.replace(
+        '', ' ').replace('_', '\_').replace('*', '\*').replace('`', '\`')
     return ''
 # ==================== 以上function準備 ==================== #
 
 
 for dialog in client.get_dialogs(limit=10):
     print(dialog.name, dialog.draft.text)
+
 group = client.get_entity(group_name)
-central = pytz.timezone("Asia/Taipei")
+central = pytz.timezone(timezone)
 msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 # for message in client.iter_messages(group, reverse=True):
 # for message in client.iter_messages(group, limit=10, offset_id=100, reverse=True):
-offset_id = int(input('offset_id = ?\n'))
-for message in client.iter_messages(group, limit=10, offset_id=offset_id, reverse=True):
+offset_id = int(input('plz input offset_id :\n'))
+now_use = 0
+now_time = time.time()
+for message in client.iter_messages(group, limit=30, offset_id=offset_id, reverse=True):
     if message.text:
+        now_use += 1
         entity = client.get_entity(PeerUser(message.from_id))
+        print(now_use)
         print(message.id, message.from_id, rtc(message.text))
-        print(message)
-
-        # print(entity.first_name)
-        # print(entity.last_name)
-        # print(message.date.astimezone(central))
-        print(entity)
-        print("========")
-        # print(entity.deleted)
+        #print(message)
+        #print(entity)
 
         if type(entity) == 'coroutine':
             entity_deleted = True
@@ -119,7 +122,7 @@ for message in client.iter_messages(group, limit=10, offset_id=offset_id, revers
         else:
             endtxt = rtc(message.text)
 
-        txt = "{0}\n\nFN={2} LN={3}\nUID={1} MID={6} \n [{4}]({5}) ".format(
+        txt = "{0}\n\nFN={2} LN={3}\nUID={1}   MID={6} \n [{4}]({5}) ".format(
             endtxt,
             message.from_id,
             entity_first_name,
@@ -134,18 +137,16 @@ for message in client.iter_messages(group, limit=10, offset_id=offset_id, revers
             "notification": False,
             "parse_mode": "Markdown"
         }
-        #print(txt)
-        if message.id % 2 == 0:
-            sendMSG(bot1,channel_id, st)
-            print('1')
-        if message.id % 2 == 1:
-            print(st)
-            sendMSG(bot2,channel_id, st)
-            print('2')
+        # print(txt)
+        target = now_use % bots_len
+        sendMSG(bots[target], channel_id, st)
+        print(base['tgbots'][target]['name'])
+        interval_time = time.time() - now_time
+        print('間隔 {0} 秒'.format(interval_time))
+        print("========")
 
-        time.sleep(3.05)
+        time.sleep(sleep_time)
         #client.send_message(channel_id, txt)
-
 
     '''
     if message.id % 991 == 0:
