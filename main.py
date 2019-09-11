@@ -20,7 +20,7 @@ bots_len = len(base['tgbots'])
 group_name = base['group_name']
 channel_id = base['channel_id']
 interval_time = base['interval']
-sleep_time = interval_time/bots_len
+sleep_time = interval_time / bots_len
 # 基本定義
 
 bots = []
@@ -80,7 +80,7 @@ def sendMSG(bot, chat_id=None, ct=None, reply_to_message_id=None):
 def rtc(text):
     if type(text) == str:
         return text.replace(
-        '', ' ').replace('_', '\_').replace('*', '\*').replace('`', '\`')
+            '', ' ').replace('_', '\_').replace('*', '\*').replace('`', '\`')
     return ''
 # ==================== 以上function準備 ==================== #
 
@@ -102,8 +102,8 @@ for message in client.iter_messages(group, limit=30, offset_id=offset_id, revers
         entity = client.get_entity(PeerUser(message.from_id))
         print(now_use)
         print(message.id, message.from_id, rtc(message.text))
-        #print(message)
-        #print(entity)
+        # print(message)
+        # print(entity)
 
         if type(entity) == 'coroutine':
             entity_deleted = True
@@ -142,20 +142,7 @@ for message in client.iter_messages(group, limit=30, offset_id=offset_id, revers
         sendMSG(bots[target], channel_id, st)
         print(base['tgbots'][target]['name'])
         interval_time = time.time() - now_time
+        now_time = time.time()
         print('間隔 {0} 秒'.format(interval_time))
         print("========")
-
         time.sleep(sleep_time)
-        #client.send_message(channel_id, txt)
-
-    '''
-    if message.id % 991 == 0:
-        print('time.sleep(61)')
-        time.sleep(61)
-    if message.id % 307 == 0:
-        print('time.sleep(5)')
-        time.sleep(5)
-    if message.id % 127 == 0:
-        print('time.sleep(2)')
-        time.sleep(2)
-    '''
