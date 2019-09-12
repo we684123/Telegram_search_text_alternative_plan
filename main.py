@@ -8,7 +8,7 @@ from telethon import TelegramClient, sync
 from telethon import events, functions, types
 from telethon.tl.types import PeerUser, PeerChat, PeerChannel
 from telethon.tl.functions.messages import AddChatUserRequest
-from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
+from ckiptagger import data_utils, construct_dictionary, WS
 # 函式庫引入完畢
 
 from config import base
