@@ -12,9 +12,14 @@ from ckiptagger import data_utils, construct_dictionary, WS
 # 函式庫引入完畢
 
 from config import base
+from config import weights_dictionary
 base = base.base()
 ws = WS("./data")
-# 設定檔引入
+recommend_dictionary = weights_dictionary.coerce_dictionary()
+recommend_dictionary = construct_dictionary(recommend_dictionary)
+coerce_dictionary = weights_dictionary.coerce_dictionary()
+coerce_dictionary = construct_dictionary(coerce_dictionary)
+# 設定檔、資源檔引入
 
 owner = base['owner']
 timezone = base['timezone']
@@ -79,9 +84,13 @@ def sendMSG(bot, chat_id=None, ct=None, reply_to_message_id=None):
     )
 
 
-def rtc(text):
+def rtc(text, recommend_dictionary, coerce_dictionary):
     if type(text) == str:
-        word_sentence_list = ws([text])
+        word_sentence_list = ws(
+            [text],
+            recommend_dictionary=recommend_dictionary,
+            coerce_dictionary=coerce_dictionary
+        )
         return miss_md(assemble(word_sentence_list))
     return ''
 
@@ -109,12 +118,13 @@ msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 offset_id = int(input('plz input offset_id :\n'))
 now_use = 0
 now_time = time.time()
-for message in client.iter_messages(group, limit=50, offset_id=offset_id, reverse=True):
+for message in client.iter_messages(group, limit=2, offset_id=offset_id, reverse=True):
     if message.text:
         now_use += 1
         entity = client.get_entity(PeerUser(message.from_id))
         print(now_use)
-        print(message.id, message.from_id, rtc(message.text))
+        rtc_ed = rtc(message.text,recommend_dictionary,coerce_dictionary)
+        print(message.id, message.from_id, rtc_ed)
         # print('message')
         # print(message)
         print(entity.username)
@@ -132,9 +142,9 @@ for message in client.iter_messages(group, limit=50, offset_id=offset_id, revers
         if entity_last_name == None:
             entity_last_name = ''
         if message.media:
-            endtxt = '[影片or照片]\n' + rtc(message.text)
+            endtxt = '[影片or照片]\n' + rtc_ed
         else:
-            endtxt = rtc(message.text)
+            endtxt = rtc_ed
         if entity.username == None:
             entity_username = ''
         else:
