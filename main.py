@@ -109,7 +109,7 @@ msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 offset_id = int(input('plz input offset_id :\n'))
 now_use = 0
 now_time = time.time()
-for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
+for message in client.iter_messages(group, limit=50, offset_id=offset_id, reverse=True):
     if message.text:
         now_use += 1
         entity = client.get_entity(PeerUser(message.from_id))
@@ -117,7 +117,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         print(message.id, message.from_id, rtc(message.text))
         # print('message')
         # print(message)
-        # print(entity)
+        print(entity.username)
 
         if type(entity) == 'coroutine':
             entity_deleted = True
@@ -135,21 +135,27 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
             endtxt = '[影片or照片]\n' + rtc(message.text)
         else:
             endtxt = rtc(message.text)
+        if entity.username == None:
+            entity_username = ''
+        else:
+            entity_username = 'https://t.me/' + entity.username
 
-        txt = "{0}\nFN={2} LN={3}\nUID={1}   MID={6} \n [{4}]({5}) ".format(
-            endtxt, #這個字尾會自己有一個 \n
+        txt = "{0}\nFN={2} LN={3}\n[UID={1}]({7})  ,  [MID={6}]({5}) \n{4}".format(
+            endtxt,  # 這個字尾會自己有一個 \n
             message.from_id,
             miss_md(entity_first_name),
             miss_md(entity_last_name),
-            str(message.date.astimezone(central)) + ' <-對話連結',
+            str(message.date.astimezone(central)),
             (msg_link_head + str(message.id)),
             str(message.id),
+            entity_username,
         )
         st = {
             "type": "to_Telegram",
             "text": txt,
             "notification": False,
-            "parse_mode": "Markdown"
+            "parse_mode": "Markdown",
+            "disable_web_page_preview": True
         }
         # print(txt)
         target = now_use % bots_len
