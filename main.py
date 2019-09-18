@@ -118,7 +118,7 @@ msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 offset_id = int(input('plz input offset_id :\n'))
 now_use = 0
 now_time = time.time()
-for message in client.iter_messages(group, limit=2, offset_id=offset_id, reverse=True):
+for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
     if message.text:
         now_use += 1
         entity = client.get_entity(PeerUser(message.from_id))
