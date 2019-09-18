@@ -150,7 +150,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         else:
             entity_username = 'https://t.me/' + entity.username
 
-        txt = "{0}\nFN={2} LN={3}\n[UID={1}]({7})  ,  [MID={6}]({5}) \n{4}".format(
+        txt = "{0}\nFN={2} LN={3}\n[UID={1}]({7}),  [MID={6}]({5}) \n{4}".format(
             endtxt,  # 這個字尾會自己有一個 \n
             message.from_id,
             miss_md(entity_first_name),
