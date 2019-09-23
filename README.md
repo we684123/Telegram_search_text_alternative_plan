@@ -46,6 +46,8 @@ python main.py
 
   感謝提出格式建議的各位。     
 
+  感謝 [raytracy](https://ithelp.ithome.com.tw/questions/10195361#answer-358640) 大大解惑授權污染的問題。
+
 
 # 贊助(Donate)
 hmmm........     
