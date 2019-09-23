@@ -1,6 +1,10 @@
 # Telegram_search_text_alternative_plan
 指望官方改好天知道猴年馬月。透過將訊息轉發至頻道，並傳送"斷詞"後的文字的方式，來讓使用者可以搜尋。
 
+## 範例頻道:
+被轉傳群 [LINE](https://t.me/AntiLINE)
+鏡像頻道 [LINE群鏡像](https://t.me/line_mirror)
+
 # 截圖(Screenshot)
 ![Imgur](https://imgur.com/0qkwYAM.png)
 ![Imgur](https://imgur.com/KgAlftg.png)
