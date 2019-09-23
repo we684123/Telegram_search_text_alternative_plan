@@ -40,6 +40,8 @@ python main.py
 
 
 # 感謝(Thank) (\*´∀\`)\~♥
+  感謝 唯唯der抱怨，不然還沒想到要做這個東東。    
+       
   感謝 [中研院 Open Source](https://github.com/ckiplab/ckiptagger) 這個斷詞模型，不然我本來是直接 text.replace('', ' ') 解決。     
 
   感謝 提供測試的2個群組(一隱藏一公開)。     
