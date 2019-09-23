@@ -40,11 +40,11 @@ python main.py
 
 
 # 感謝(Thank) (\*´∀\`)\~♥
-  感謝中研院 Open Source 這個斷詞模型，不然我本來是直接 text.replace('', ' ') 解決。     
+  感謝 [中研院 Open Source](https://github.com/ckiplab/ckiptagger) 這個斷詞模型，不然我本來是直接 text.replace('', ' ') 解決。     
 
-  感謝提供測試的2個群組(一隱藏一公開)。     
+  感謝 提供測試的2個群組(一隱藏一公開)。     
 
-  感謝提出格式建議的各位。     
+  感謝 提出格式建議的各位。     
 
   感謝 [raytracy](https://ithelp.ithome.com.tw/questions/10195361#answer-358640) 大大解惑授權污染的問題。
 
