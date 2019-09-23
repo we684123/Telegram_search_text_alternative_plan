@@ -16,20 +16,35 @@
 -  [ckiptagger](https://github.com/ckiplab/ckiptagger) 所需要的，請自行參考他的文件來選擇適合你電腦的方式。    
 (恩對，他的data資料請下載後解壓擺跟main.py同目錄)
 
-- config資料夾內
+- config 資料夾內
     * base.py請填上你的bot...等資料(內有說明便不複述)。
     * weights_dictionary.py是調整字的權重用的，不調也沒差。
 
-- Telegram端
+- Telegram 端
     * 拉userbot到群組(可能需要將此群組置頂，主要是讓Telethon看見他啦)
     * 把你的bots拉到頻道當管理員(發言權限記得給)
 
 
+# 執行(start)
+
+```
+python main.py
+```
+執行後CLI會要你填offset_id，剛開始的話0就好，或者看你要從第幾條開始轉發。    
+如果是中斷後繼續轉發，則可直接輸入最後的MID編號。     
+
 # 免責(Disclaimer)
-如用此程式造成TG帳號被刪或其他事故一蓋不負責任。    
+**如用此程式造成TG帳號被刪或其他事故一蓋不負責任。**    
 
 對了，我用獻祭一個帳號換得一個知識，如果想用userbot去發，你一但被429一次，沒有第二次...。     
 
+
+# 感謝(Thank) (\*´∀\`)\~♥
+  感謝中研院 Open Source 這個段詞模型，不然我本來是直接 text.replace('', ' ') 解決。     
+
+  感謝提供測試的2個群組(一隱藏一公開)。     
+
+  感謝提出格式建議的各位。     
 
 # 作者(Author)
 ![](https://avatars3.githubusercontent.com/u/22027801?s=460&v=4)    
