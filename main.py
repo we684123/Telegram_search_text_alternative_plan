@@ -118,47 +118,58 @@ msg_link_head = 'https://t.me/c/{0}/'.format(group.id)
 offset_id = int(input('plz input offset_id :\n'))
 now_use = 0
 now_time = time.time()
+users = {}
 for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
     if message.text:
         now_use += 1
-        entity = client.get_entity(PeerUser(message.from_id))
-        print(now_use)
-        rtc_ed = rtc(message.text,recommend_dictionary,coerce_dictionary)
-        print(message.id, message.from_id, rtc_ed)
-        # print('message')
-        # print(message)
-        print(entity.username)
-
-        if type(entity) == 'coroutine':
-            entity_deleted = True
-            entity_first_name = '已刪除的帳號'
-            entity_last_name = ''
+        if message.from_id in users:
+            UserNm = users[message.from_id]["UserNm"]
+            UserFN = users[message.from_id]["UserFN"]
+            UserLN = users[message.from_id]["UserLN"]
         else:
-            entity_first_name = entity.first_name
-            entity_last_name = entity.last_name
+            entity = client.get_entity(PeerUser(message.from_id))
+            if type(entity) == 'coroutine':
+                UserNm = ''
+                UserFN = '已刪除的帳號'
+                UserLN = ''
+            else:
+                if entity.username == None:
+                    UserNm = ''
+                else:
+                    UserNm = 'https://t.me/' + entity.username
+                UserFN = entity.first_name
+                UserLN = entity.last_name
+                users.update({str(message.from_id): {"UserNm": UserNm}})
+                users.update({str(message.from_id): {"UserFN": UserFN}})
+                users.update({str(message.from_id): {"UserLN": UserLN}})
+                #users[message.from_id]["UserFN"] = UserFN
+                #users[message.from_id]["UserLN"] = UserLN
 
-        if entity_first_name == None:
-            entity_first_name = '已刪除的帳號'
-        if entity_last_name == None:
-            entity_last_name = ''
+                if UserFN == None:
+                    UserFN = '已刪除的帳號'
+                if UserLN == None:
+                    UserLN = ''
+        rtc_ed = rtc(message.text, recommend_dictionary, coerce_dictionary)
+        print(now_use)
+        print(message.id, message.from_id, rtc_ed)
+        print(entity.username)
+        print(UserFN)
+        print(UserLN)
+
         if message.media:
             endtxt = '[影片or照片]\n' + rtc_ed
         else:
             endtxt = rtc_ed
-        if entity.username == None:
-            entity_username = ''
-        else:
-            entity_username = 'https://t.me/' + entity.username
 
         txt = "{0}\nFN={2} LN={3}\n[UID={1}]({7}),  [MID={6}]({5}) \n{4}".format(
-            endtxt,  # 這個字尾會自己有一個 \n
+            endtxt,
             message.from_id,
-            miss_md(entity_first_name),
-            miss_md(entity_last_name),
+            miss_md(UserFN),
+            miss_md(UserLN),
             str(message.date.astimezone(central)),
             (msg_link_head + str(message.id)),
             str(message.id),
-            entity_username,
+            UserNm,
         )
         st = {
             "type": "to_Telegram",
@@ -167,7 +178,6 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
             "parse_mode": "Markdown",
             "disable_web_page_preview": True
         }
-        # print(txt)
         target = now_use % bots_len
         print(base['tgbots'][target]['name'])
         sendMSG(bots[target], channel_id, st)
