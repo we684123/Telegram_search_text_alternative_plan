@@ -161,7 +161,7 @@ for message in client.iter_messages(group, offset_id=offset_id, reverse=True):
         else:
             endtxt = rtc_ed
 
-        txt = "{0}\nFN={2} LN={3}\n[UID={1}]({7}),  [MID={6}]({5}) \n{4}".format(
+        txt = "{0}\nFN={2} LN={3}\n[UID={1}]({7}), [MID={6}]({5}) \n{4}".format(
             endtxt,
             message.from_id,
             miss_md(UserFN),
