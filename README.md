@@ -1,5 +1,5 @@
 # Telegram_search_text_alternative_plan
-指望官方改好天知道猴年馬月。透過將訊息轉發至頻道，並傳送"斷字"後的文字的方式，來讓使用者可以搜尋。
+指望官方改好天知道猴年馬月。透過將訊息轉發至頻道，並傳送"斷詞"後的文字的方式，來讓使用者可以搜尋。
 
 # 截圖(Screenshot)
 ![Imgur](https://imgur.com/0qkwYAM.png)
@@ -14,10 +14,10 @@
   telepot\=\=12.7
   Telethon\=\=1.10.0
 -  [ckiptagger](https://github.com/ckiplab/ckiptagger) 所需要的，請自行參考他的文件來選擇適合你電腦的方式。    
-(恩對，他的data資料請下載後解壓擺跟main.py同目錄)
+(恩對，他的 data 資料請下載後解壓擺跟main.py同目錄)
 
 - config 資料夾內
-    * base.py請填上你的bot...等資料(內有說明便不複述)。
+    * base.py 請填上你的bot...等資料(內有說明便不複述)。
     * weights_dictionary.py是調整字的權重用的，不調也沒差。
 
 - Telegram 端
@@ -30,21 +30,28 @@
 ```
 python main.py
 ```
-執行後CLI會要你填offset_id，剛開始的話0就好，或者看你要從第幾條開始轉發。    
-如果是中斷後繼續轉發，則可直接輸入最後的MID編號。     
+執行後 CLI 會要你填 offset_id，剛開始的話0就好，或者看你要從第幾條開始轉發。    
+如果是中斷後繼續轉發，則可直接輸入最後的 MID 編號。     
 
 # 免責(Disclaimer)
 **如用此程式造成TG帳號被刪或其他事故一蓋不負責任。**    
 
-對了，我用獻祭一個帳號換得一個知識，如果想用userbot去發，你一但被429一次，沒有第二次...。     
+對了，我用獻祭一個帳號換得一個知識，如果想用 userbot 去發，你一但被429一次，沒有第二次...。     
 
 
 # 感謝(Thank) (\*´∀\`)\~♥
-  感謝中研院 Open Source 這個段詞模型，不然我本來是直接 text.replace('', ' ') 解決。     
+  感謝中研院 Open Source 這個斷詞模型，不然我本來是直接 text.replace('', ' ') 解決。     
 
   感謝提供測試的2個群組(一隱藏一公開)。     
 
   感謝提出格式建議的各位。     
+
+
+# 贊助(Donate)
+hmmm........     
+如果你覺得這對你有幫助的話，........    
+聽說這是 "台灣pay" 的 [QRcode](https://i.imgur.com/rVmAnh6.jpg)..............    
+但我也沒用過(｡ŏ﹏ŏ) .......................................    
 
 # 作者(Author)
 ![](https://avatars3.githubusercontent.com/u/22027801?s=460&v=4)    
